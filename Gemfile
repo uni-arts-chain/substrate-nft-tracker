@@ -10,5 +10,3 @@ gem "rake", "~> 13.0"
 gem "rspec", "~> 3.0"
 
 gem "rubocop", "~> 0.80"
-
-gem 'scale.rb', git: 'https://github.com/itering/scale.rb.git', branch: 'develop'

@@ -60,4 +60,11 @@ class Pangolin
     nft_helper = SubstrateEvmNftHelper.new(@substrate_client)
     nft_helper.get_evm_nft_events(block_number)
   end
+
+  def get_latest_block_number()
+    head = @substrate_client.chain_getFinalizedHead
+    header = @substrate_client.chain_getHeader head
+    header["number"].to_i(16)
+    # puts @substrate_client.methods
+  end
 end

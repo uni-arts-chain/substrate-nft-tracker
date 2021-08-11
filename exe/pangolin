@@ -1,0 +1,44 @@
+#!/usr/bin/env ruby
+
+require File.expand_path("../lib/substrate/nft/tracker", __dir__)
+
+
+if ARGV[0].nil? 
+  puts "Please input a block_number."
+  puts "Usage: pangolin <BLOCK_NUMBER>"
+else
+  begin
+    start_from = Integer(ARGV[0])
+
+    pangolin = Pangolin.new("wss://pangolin-rpc.darwinia.network")
+    latest_block_number = pangolin.get_latest_block_number
+    puts "The lasest block number is #{latest_block_number}"
+
+    while true
+      begin
+        if start_from <= latest_block_number
+          puts "Scan block #{start_from}"
+          erc721_events, erc1155_events = pangolin.get_evm_nft_events(start_from)
+          puts "#{erc721_events.length} erc721 events scanned"
+          puts "#{erc1155_events.length} erc1155 events scanned"
+          start_from += 1
+        else
+          sleep(12)
+          latest_block_number = pangolin.get_latest_block_number
+          puts "The lasest block number is #{latest_block_number}"
+        end
+      rescue => ex
+        puts ex
+        puts ex.backtrace
+        sleep(30)
+      end
+    end
+
+  rescue ArgumentError => ex
+    if ex.message.start_with?("invalid value for Integer")
+      puts "Please input an integer as the block number."
+      puts "Usage: pangolin <BLOCK_NUMBER>"
+    end
+  end
+end
+
