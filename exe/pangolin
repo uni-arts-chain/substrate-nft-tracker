@@ -1,7 +1,9 @@
 #!/usr/bin/env ruby
 
-require File.expand_path("../lib/substrate/nft/tracker", __dir__)
+require File.expand_path("../lib/tracker", __dir__)
 
+
+Tracker::logger = Logger.new(STDOUT)
 
 if ARGV[0].nil? 
   puts "Please input a block_number."
@@ -10,26 +12,30 @@ else
   begin
     start_from = Integer(ARGV[0])
 
+    # init client and nft helper
     pangolin = Pangolin.new("wss://pangolin-rpc.darwinia.network")
+    nft_helper = SubstrateEvmNftHelper.new(pangolin)
+
     latest_block_number = pangolin.get_latest_block_number
-    puts "The lasest block number is #{latest_block_number}"
+    Tracker::logger.info "The lasest block number is #{latest_block_number}"
 
     while true
       begin
         if start_from <= latest_block_number
-          puts "Scan block #{start_from}"
-          erc721_events, erc1155_events = pangolin.get_evm_nft_events(start_from)
-          puts "#{erc721_events.length} erc721 events scanned"
-          puts "#{erc1155_events.length} erc1155 events scanned"
+          Tracker::logger.info "Scan block #{start_from}"
+          erc721_events, erc1155_events = nft_helper.get_evm_nft_events(start_from)
+          Tracker::logger.info "#{erc721_events.length} erc721 events scanned"
+          Tracker::logger.info "#{erc1155_events.length} erc1155 events scanned"
           start_from += 1
         else
+          Tracker::logger.info "Sleep 12 seconds."
           sleep(12)
           latest_block_number = pangolin.get_latest_block_number
-          puts "The lasest block number is #{latest_block_number}"
+          Tracker::logger.info "The lasest block number is #{latest_block_number}"
         end
       rescue => ex
-        puts ex
-        puts ex.backtrace
+        Tracker::logger.error ex
+        Tracker::logger.error ex.backtrace
         sleep(30)
       end
     end

@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require_relative "lib/substrate/nft/tracker/version"
+require_relative "lib/tracker/version"
 
 Gem::Specification.new do |spec|
   spec.name          = "substrate-nft-tracker"
-  spec.version       = Substrate::Nft::Tracker::VERSION
+  spec.version       = Tracker::VERSION
   spec.authors       = ["Aki Wu"]
   spec.email         = ["wuminzhe@gmail.com"]
 

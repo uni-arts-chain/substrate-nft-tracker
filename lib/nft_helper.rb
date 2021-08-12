@@ -1,7 +1,7 @@
 class SubstrateEvmNftHelper
-  attr_reader :substrate_client    
-  def initialize(substrate_client)
-    @substrate_client = substrate_client
+  attr_reader :client    
+  def initialize(client)
+    @client = client
   end
 
   def get_evm_nft_events(block_number)
@@ -12,12 +12,13 @@ class SubstrateEvmNftHelper
     erc1155_transfer_single = "0xc3d58168c5ae7397731d063d5bbf3d657854427343f4c083240f7aacaa2d0f62"
     erc1155_transfer_batch  = "0x4a39dc06d4c0dbc64b70af90fd698a233a518aa5d07e595d983b8c0526c8f7fb"
 
-    block_hash = @substrate_client.chain_getBlockHash(block_number)
-    events = @substrate_client.get_block_events(block_hash)[1]
+    Tracker::logger.info("----------------------")
     erc721_events = []
     erc1155_events = []
-    events.each do |event|
-      if event[:event_index] == "2800" 
+    @client.get_events_by_block_number(block_number).each do |event|
+      module_name = event[:module_metadata][:name]
+      event_name = event[:event_metadata][:name]
+      if module_name == "EVM" && event_name == "Log"
 
         event[:params].each do |param|
           if param[:name] == "Log"
@@ -66,6 +67,7 @@ class SubstrateEvmNftHelper
   end
 
   private
+
     def get_token_ids_and_amounts(data)
       chunks = data[2..].scan(/.{1,64}/)[2..]
       len = chunks.length
