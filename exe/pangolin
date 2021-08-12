@@ -2,8 +2,8 @@
 
 require File.expand_path("../lib/tracker", __dir__)
 
-
 Tracker::logger = Logger.new(STDOUT)
+Tracker::logger.level = Logger::INFO
 
 if ARGV[0].nil? 
   puts "Please input a block_number."
@@ -16,28 +16,8 @@ else
     pangolin = Pangolin.new("wss://pangolin-rpc.darwinia.network")
     nft_helper = SubstrateEvmNftHelper.new(pangolin)
 
-    latest_block_number = pangolin.get_latest_block_number
-    Tracker::logger.info "The lasest block number is #{latest_block_number}"
-
-    while true
-      begin
-        if start_from <= latest_block_number
-          Tracker::logger.info "Scan block #{start_from}"
-          erc721_events, erc1155_events = nft_helper.get_evm_nft_events(start_from)
-          Tracker::logger.info "#{erc721_events.length} erc721 events scanned"
-          Tracker::logger.info "#{erc1155_events.length} erc1155 events scanned"
-          start_from += 1
-        else
-          Tracker::logger.info "Sleep 12 seconds."
-          sleep(12)
-          latest_block_number = pangolin.get_latest_block_number
-          Tracker::logger.info "The lasest block number is #{latest_block_number}"
-        end
-      rescue => ex
-        Tracker::logger.error ex
-        Tracker::logger.error ex.backtrace
-        sleep(30)
-      end
+    nft_helper.track_nft(start_from) do |erc721_events, erc1155_events|
+      # TODO: send to sidekiq queue
     end
 
   rescue ArgumentError => ex

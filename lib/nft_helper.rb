@@ -4,6 +4,34 @@ class SubstrateEvmNftHelper
     @client = client
   end
 
+  def track_nft(start_from)
+    latest_block_number = @client.get_latest_block_number
+    Tracker::logger.debug "The lasest block number is #{latest_block_number}"
+
+    while true
+      begin
+        if start_from <= latest_block_number
+          Tracker::logger.info "Scan block #{start_from}"
+          erc721_events, erc1155_events = get_evm_nft_events(start_from)
+          Tracker::logger.debug "#{erc721_events.length} erc721 events scanned"
+          Tracker::logger.debug "#{erc1155_events.length} erc1155 events scanned"
+          yield erc721_events, erc1155_events
+          start_from += 1
+        else
+          Tracker::logger.debug "Sleep 12 seconds."
+          sleep(12)
+          latest_block_number = @client.get_latest_block_number
+          Tracker::logger.debug "The lasest block number is #{latest_block_number}"
+        end
+      rescue => ex
+        Tracker::logger.error ex
+        Tracker::logger.error ex.backtrace
+        Tracker::logger.debug "Sleep 30 seconds."
+        sleep(30)
+      end
+    end
+  end
+
   def get_evm_nft_events(block_number)
     # ERC721
     erc721_transfer_topic = "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef" 
@@ -12,7 +40,6 @@ class SubstrateEvmNftHelper
     erc1155_transfer_single = "0xc3d58168c5ae7397731d063d5bbf3d657854427343f4c083240f7aacaa2d0f62"
     erc1155_transfer_batch  = "0x4a39dc06d4c0dbc64b70af90fd698a233a518aa5d07e595d983b8c0526c8f7fb"
 
-    Tracker::logger.info("----------------------")
     erc721_events = []
     erc1155_events = []
     @client.get_events_by_block_number(block_number).each do |event|
