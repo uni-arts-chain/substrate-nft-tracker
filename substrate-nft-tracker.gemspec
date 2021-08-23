@@ -29,4 +29,6 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency "scale.rb", "~> 0.3.0"
+  spec.add_dependency 'sqlite3', '~> 1.4', '>= 1.4.2'
+  spec.add_dependency 'ethereum.rb', '~> 2.5'
 end

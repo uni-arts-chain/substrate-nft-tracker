@@ -12,13 +12,18 @@ else
   begin
     start_from = Integer(ARGV[0])
 
-    # init client and nft helper
-    pangolin = Pangolin.new("wss://pangolin-rpc.darwinia.network")
-    nft_helper = SubstrateEvmNftHelper.new(pangolin)
+    client = Ethereum::HttpClient.new("https://pangolin-rpc.darwinia.network")
+    contract =  Ethereum::Contract.create(address: "0xBD9058bed767E006dbE4Ab1ba85446401b1daafC", abi: Tracker.get_erc721_abi, client: client)
+    client.gas_price = 120000000000
+    puts contract.call.name()
 
-    nft_helper.track_nft(start_from) do |erc721_events, erc1155_events|
-      # TODO: send to sidekiq queue
-    end
+    # init client and nft helper
+    # pangolin = Pangolin.new("wss://pangolin-rpc.darwinia.network")
+    # nft_helper = SubstrateEvmNftHelper.new(pangolin)
+
+    # nft_helper.track_nft(start_from) do |erc721_events, erc1155_events|
+    #   # TODO: send to sidekiq queue
+    # end
 
   rescue ArgumentError => ex
     if ex.message.start_with?("invalid value for Integer")
