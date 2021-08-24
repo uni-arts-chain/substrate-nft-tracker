@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "substrate/nft/tracker"
+require "tracker"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
