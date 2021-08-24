@@ -19,5 +19,11 @@ class PangolinContractHelper
     contract.call.token_uri(token_id)
   end
 
+  def get_uri(address, token_id)
+    contract = Ethereum::Contract.create(name: "Contract", address: address, abi: Tracker.get_erc1155_abi, client: @client)
+    contract.sender = "0xC5c1C9c3cEA2f4A68E540b18e63310310FD8af57"
+    contract.call.uri(token_id)
+  end
+
 end
 

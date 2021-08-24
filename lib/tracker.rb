@@ -18,6 +18,11 @@ module Tracker
       file = File.join __dir__, "erc721.json"
       File.open(file).read
     end
+
+    def get_erc1155_abi
+      file = File.join __dir__, "erc1155.json"
+      File.open(file).read
+    end
   end
 end
 
