@@ -12,24 +12,46 @@ else
   begin
     start_from = Integer(ARGV[0])
 
-    client = Ethereum::HttpClient.new("https://pangolin-rpc.darwinia.network")
-    contract =  Ethereum::Contract.create(address: "0xBD9058bed767E006dbE4Ab1ba85446401b1daafC", abi: Tracker.get_erc721_abi, client: client)
-    client.gas_price = 120000000000
-    puts contract.call.name()
+    # name, symbol = get_name_and_symbol(client, "0xBD9058bed767E006dbE4Ab1ba85446401b1daafC")
 
     # init client and nft helper
-    # pangolin = Pangolin.new("wss://pangolin-rpc.darwinia.network")
-    # nft_helper = SubstrateEvmNftHelper.new(pangolin)
+    pangolin = Pangolin.new("wss://pangolin-rpc.darwinia.network")
+    nft_helper = SubstrateEvmNftHelper.new(pangolin)
+    contract_helper = PangolinContractHelper.new
 
-    # nft_helper.track_nft(start_from) do |erc721_events, erc1155_events|
-    #   # TODO: send to sidekiq queue
-    # end
+    nft_helper.track_nft(start_from) do |erc721_events, erc1155_events|
+      # TODO: send to sidekiq queue
+
+      erc721_events.each do |erc721_event|
+        begin
+          name, symbol = contract_helper.get_name_and_symbol(erc721_event[:address])
+          token_uri = contract_helper.get_token_uri(erc721_event[:address], erc721_event[:token_id])
+          puts "name: #{name}, symbol: #{symbol}, token_uri: #{token_uri}, #{erc721_event}" 
+        rescue => ex
+          puts ex.message
+          puts ex.backtrace
+        end
+      end
+
+      erc1155_events.each do |erc1155_event|
+        begin
+          uri = contract_helper.get_uri(erc1155_event[:address], erc1155_event[:token_id])
+          puts "uri: #{uri}, #{erc1155_event}" 
+        rescue => ex
+          puts ex.message
+          puts ex.backtrace
+        end
+      end
+
+    end
 
   rescue ArgumentError => ex
     if ex.message.start_with?("invalid value for Integer")
       puts "Please input an integer as the block number."
       puts "Usage: pangolin <BLOCK_NUMBER>"
     end
+  rescue => ex
+    puts ex.message
+    puts ex.backtrace
   end
 end
-
