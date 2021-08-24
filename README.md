@@ -1,43 +1,49 @@
-# Substrate::Nft::Tracker
+# Substrate Nft Tracker
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/substrate/nft/tracker`. To experiment with that code, run `bin/console` for an interactive prompt.
+This is a tool for tracking NFT in the evm pallet of substrate based blockchain.
 
-TODO: Delete this and the text above, and describe your gem
+This tool is part of [The NFT Explorer](https://github.com/uni-arts-chain/uniscan). It gets NFT-related events by listening to the substrate's native events.
+
+The advantage of this approach is that it does not rely on the rpc interfaces provided by the Ethereum, but uses the native rpc interface provided by substrate. This approach is more reliable in the polkadot ecosystem.
 
 ## Installation
 
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'substrate-nft-tracker'
+```bash
+$ gem install substrate-nft-tracker
 ```
 
-And then execute:
+## Run
 
-    $ bundle install
+Run an example(it is for Darwinia Pangolin Network) that has been implemented here. 
 
-Or install it yourself as:
+```bash
+$ pangolin 1234
+```
 
-    $ gem install substrate-nft-tracker
+The only parameter is the start block height.
 
-## Usage
+## Develop a new NFT tracker for a new blockchain
 
-TODO: Write usage instructions here
+You can create a new project yourself, or you can fork the project and add files on top of it, I recommend the latter:
 
-## Development
+1. Create the client of the blockchain
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+   You can refer to `lib/testnets/pangolin.rb` as an example. 
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+   You need to add types for this chain and implement two methods `get_latest_block_number()` and `get_events_by_block_number(block_number)`.
+
+2. Create an executable program
+
+   You can refer to `exe/pangolin` as an example.
+
+## Test
+
+run `rake spec` to run the tests. 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/substrate-nft-tracker. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/[USERNAME]/substrate-nft-tracker/blob/master/CODE_OF_CONDUCT.md).
+Bug reports and pull requests are welcome on GitHub at https://github.com/uni-arts-chain/substrate-nft-tracker. 
 
 ## License
 
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
-
-## Code of Conduct
-
-Everyone interacting in the Substrate::Nft::Tracker project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/substrate-nft-tracker/blob/master/CODE_OF_CONDUCT.md).
