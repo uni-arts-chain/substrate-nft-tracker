@@ -3,13 +3,13 @@ PATH
   specs:
     substrate-nft-tracker (0.1.0)
       ethereum.rb (~> 2.5)
-      scale.rb (~> 0.3.0)
+      scale.rb (~> 0.3.2)
       sqlite3 (~> 1.4, >= 1.4.2)
 
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (6.1.4)
+    activesupport (6.1.4.1)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
@@ -68,7 +68,7 @@ GEM
     rubocop-ast (1.9.1)
       parser (>= 3.0.1.1)
     ruby-progressbar (1.11.0)
-    scale.rb (0.3.0)
+    scale.rb (0.3.2)
       base58
       blake2b_rs (~> 0.1.2)
       faye-websocket
