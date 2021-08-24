@@ -6,6 +6,7 @@ require "logger"
 require "scale"
 require "json"
 require "testnets/pangolin"
+require "testnets/pangolin_contract_helper"
 require "nft_helper"
 require "ethereum"
 
