@@ -24,8 +24,8 @@ class SubstrateEvmNftHelper
           Tracker::logger.debug "The lasest block number is #{latest_block_number}"
         end
       rescue => ex
-        Tracker::logger.error ex
-        Tracker::logger.error ex.backtrace
+        Tracker::logger.error ex.message
+        Tracker::logger.error ex.backtrace.join("\n")
         Tracker::logger.debug "Sleep 30 seconds."
         sleep(30)
       end
@@ -59,7 +59,7 @@ class SubstrateEvmNftHelper
                 to = "0x#{topics[2][26..]}"
                 token_id = topics[3].to_i(16)
 
-                erc721_events << {from: from, to: to, token_id: token_id}
+                erc721_events << {address: address, from: from, to: to, token_id: token_id}
               end
             elsif topics[0] == erc1155_transfer_single 
               if topics.length == 4
@@ -69,7 +69,7 @@ class SubstrateEvmNftHelper
                 token_id = data[0...66].to_i(16)
                 amount = data[66...130].to_i(16)
 
-                erc1155_events << {from: from, to: to, token_id: token_id, amount: amount}
+                erc1155_events << {address: address, from: from, to: to, token_id: token_id, amount: amount}
               end
             elsif topics[0] == erc1155_transfer_batch
               if topics.length == 4
@@ -80,7 +80,7 @@ class SubstrateEvmNftHelper
 
                 token_ids.each_with_index do |token_id, i|
                   amount = amounts[i]
-                  erc1155_events << {from: from, to: to, token_id: token_id, amount: amount}
+                  erc1155_events << {address: address, from: from, to: to, token_id: token_id, amount: amount}
                 end
               end
             end
