@@ -7,7 +7,10 @@ class Erc1155Contract
       @contract.sender = sender
     end
 
+    # raise err if the address is not a erc721 contract
     raise Tracker::NotErc1155ContractError unless @contract.call.supports_interface(Bytes.new("0xd9b67a26"))
+
+    # raise err if this erc721 has no metadata
     raise Tracker::Erc1155WithoutMetadata.new(address) unless @contract.call.supports_interface(Bytes.new("0x0e89341c"))
   end
 
