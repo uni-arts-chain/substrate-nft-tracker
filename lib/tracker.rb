@@ -9,8 +9,14 @@ require "testnets/pangolin"
 require "testnets/pangolin_contract_helper"
 require "nft_helper"
 require "ethereum"
+require "bytes"
+require "erc721_contract"
+require "erc1155_contract"
 
 module Tracker
+  class NotErc721ContractError < StandardError; end
+  class NotErc1155ContractError < StandardError; end
+
   class <<self
     attr_accessor :logger
 
