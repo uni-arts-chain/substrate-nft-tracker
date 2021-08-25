@@ -40,6 +40,13 @@ You can create a new project yourself, or you can fork the project and add files
 
 run `rake spec` to run the tests. 
 
+## Docker
+
+```bash
+$ docker build -t substrate-nft-tracker .
+$ docker run -it --rm substrate-nft-tracker pangolin 167421
+```
+
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/uni-arts-chain/substrate-nft-tracker. 
