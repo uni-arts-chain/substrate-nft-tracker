@@ -15,7 +15,9 @@ require "erc1155_contract"
 
 module Tracker
   class NotErc721ContractError < StandardError; end
+  class Erc721WithoutMetadata < StandardError; end
   class NotErc1155ContractError < StandardError; end
+  class Erc1155WithoutMetadata < StandardError; end
 
   class <<self
     attr_accessor :logger

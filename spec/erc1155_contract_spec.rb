@@ -31,4 +31,13 @@ RSpec.describe Erc1155Contract do
     }.to raise_error(ArgumentError)
   end
 
+  it "can not be initialized from a erc1155 contract without metadata" do
+    expect {
+      Erc1155Contract.new(
+        "https://pangolin-rpc.darwinia.network",
+        "0x1Cc1D7F55D5540041f869cF94c1294A0D95992C0", # <- erc1155 contract without metadata
+        "0xC5c1C9c3cEA2f4A68E540b18e63310310FD8af57"
+      )
+    }.to raise_error(Tracker::Erc1155WithoutMetadata)
+  end
 end

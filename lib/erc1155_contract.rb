@@ -8,6 +8,7 @@ class Erc1155Contract
     end
 
     raise Tracker::NotErc1155ContractError unless @contract.call.supports_interface(Bytes.new("0xd9b67a26"))
+    raise Tracker::Erc1155WithoutMetadata.new(address) unless @contract.call.supports_interface(Bytes.new("0x0e89341c"))
   end
 
   def uri(token_id)

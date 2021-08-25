@@ -22,4 +22,14 @@ RSpec.describe Erc721Contract do
     }.to raise_error(Tracker::NotErc721ContractError)
   end
 
+  it "can not be initialized from a erc721 contract without metadata" do
+    expect {
+      Erc721Contract.new(
+        "https://pangolin-rpc.darwinia.network",
+        "0x2b75d135E605D9aBABb9a6F7bFad31F7d003F44e", # <- erc721 contract without metadata
+        "0xC5c1C9c3cEA2f4A68E540b18e63310310FD8af57"
+      )
+    }.to raise_error(Tracker::Erc721WithoutMetadata)
+  end
+
 end
