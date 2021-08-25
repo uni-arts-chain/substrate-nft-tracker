@@ -4,7 +4,6 @@ PATH
     substrate-nft-tracker (0.1.0)
       ethereum.rb (~> 2.5)
       scale.rb (~> 0.3.2)
-      sqlite3 (~> 1.4, >= 1.4.2)
 
 GEM
   remote: https://rubygems.org/
@@ -75,7 +74,6 @@ GEM
       json (~> 2.3.0)
       thor (~> 1.0)
       xxhash
-    sqlite3 (1.4.2)
     thermite (0.13.0)
       minitar (~> 0.5)
       rake (>= 10)
@@ -92,6 +90,7 @@ GEM
     zeitwerk (2.4.2)
 
 PLATFORMS
+  aarch64-linux-musl
   arm64-darwin-20
 
 DEPENDENCIES
