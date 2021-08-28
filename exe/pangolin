@@ -12,8 +12,6 @@ else
   begin
     start_from = Integer(ARGV[0])
 
-    # name, symbol = get_name_and_symbol(client, "0xBD9058bed767E006dbE4Ab1ba85446401b1daafC")
-
     # init client and nft helper
     pangolin = Pangolin.new("wss://pangolin-rpc.darwinia.network")
     nft_helper = SubstrateEvmNftHelper.new(pangolin)

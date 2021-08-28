@@ -6,13 +6,14 @@ This tool is part of [The NFT Explorer](https://github.com/uni-arts-chain/unisca
 
 The advantage of this approach is that it does not rely on the rpc interfaces provided by the Ethereum, but uses the native rpc interface provided by substrate. This approach is more reliable in the polkadot ecosystem.
 
-## Installation
+## Usage
+### Installation
 
 ```bash
 $ gem install substrate-nft-tracker
 ```
 
-## Run
+### Run
 
 Run an example(it is for Darwinia Pangolin Network) that has been implemented here. 
 
@@ -22,7 +23,7 @@ $ pangolin 1234
 
 The only parameter is the start block height.
 
-## Develop a new NFT tracker for a new blockchain
+### Develop a new NFT tracker for a new blockchain
 
 You can create a new project yourself, or you can fork the project and add files on top of it, I recommend the latter:
 
